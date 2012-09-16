@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010 Express for Windows Phone
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninja Dash", "Ninja Dash\Ninja Dash\Ninja Dash.csproj", "{5780B80D-393F-4170-9F2D-8C898898E71F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninja DashContent", "Ninja Dash\Ninja DashContent\Ninja DashContent.contentproj", "{393FADB4-4217-428F-8646-DF7289ADB6F8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Windows Phone = Debug|Windows Phone
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Windows Phone = Release|Windows Phone
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5780B80D-393F-4170-9F2D-8C898898E71F}.Debug|Any CPU.ActiveCfg = Debug|Windows Phone
+		{5780B80D-393F-4170-9F2D-8C898898E71F}.Debug|Mixed Platforms.ActiveCfg = Debug|Windows Phone
+		{5780B80D-393F-4170-9F2D-8C898898E71F}.Debug|Mixed Platforms.Build.0 = Debug|Windows Phone
+		{5780B80D-393F-4170-9F2D-8C898898E71F}.Debug|Mixed Platforms.Deploy.0 = Debug|Windows Phone
+		{5780B80D-393F-4170-9F2D-8C898898E71F}.Debug|Windows Phone.ActiveCfg = Debug|Windows Phone
+		{5780B80D-393F-4170-9F2D-8C898898E71F}.Debug|Windows Phone.Build.0 = Debug|Windows Phone
+		{5780B80D-393F-4170-9F2D-8C898898E71F}.Debug|Windows Phone.Deploy.0 = Debug|Windows Phone
+		{5780B80D-393F-4170-9F2D-8C898898E71F}.Debug|x86.ActiveCfg = Debug|Windows Phone
+		{5780B80D-393F-4170-9F2D-8C898898E71F}.Release|Any CPU.ActiveCfg = Release|Windows Phone
+		{5780B80D-393F-4170-9F2D-8C898898E71F}.Release|Mixed Platforms.ActiveCfg = Release|Windows Phone
+		{5780B80D-393F-4170-9F2D-8C898898E71F}.Release|Mixed Platforms.Build.0 = Release|Windows Phone
+		{5780B80D-393F-4170-9F2D-8C898898E71F}.Release|Mixed Platforms.Deploy.0 = Release|Windows Phone
+		{5780B80D-393F-4170-9F2D-8C898898E71F}.Release|Windows Phone.ActiveCfg = Release|Windows Phone
+		{5780B80D-393F-4170-9F2D-8C898898E71F}.Release|Windows Phone.Build.0 = Release|Windows Phone
+		{5780B80D-393F-4170-9F2D-8C898898E71F}.Release|Windows Phone.Deploy.0 = Release|Windows Phone
+		{5780B80D-393F-4170-9F2D-8C898898E71F}.Release|x86.ActiveCfg = Release|Windows Phone
+		{393FADB4-4217-428F-8646-DF7289ADB6F8}.Debug|Any CPU.ActiveCfg = Debug|Windows Phone
+		{393FADB4-4217-428F-8646-DF7289ADB6F8}.Debug|Mixed Platforms.ActiveCfg = Debug|Windows Phone
+		{393FADB4-4217-428F-8646-DF7289ADB6F8}.Debug|Windows Phone.ActiveCfg = Debug|Windows Phone
+		{393FADB4-4217-428F-8646-DF7289ADB6F8}.Debug|x86.ActiveCfg = Debug|Windows Phone
+		{393FADB4-4217-428F-8646-DF7289ADB6F8}.Release|Any CPU.ActiveCfg = Release|Windows Phone
+		{393FADB4-4217-428F-8646-DF7289ADB6F8}.Release|Mixed Platforms.ActiveCfg = Release|Windows Phone
+		{393FADB4-4217-428F-8646-DF7289ADB6F8}.Release|Windows Phone.ActiveCfg = Release|Windows Phone
+		{393FADB4-4217-428F-8646-DF7289ADB6F8}.Release|x86.ActiveCfg = Release|Windows Phone
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
