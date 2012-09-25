@@ -819,26 +819,40 @@ namespace Ninja_Dash
 
         private void UpdateWalls(GameTime gameTime)
         {
+            //Create a slide in transition of left wall
             if (leftWall.xCoordinate < 0)
             {
                 leftWall.xCoordinate += (float)(leftWall.horizontalScrollSpeed * gameTime.ElapsedGameTime.TotalSeconds);
             }
             else
             {
+                //Set the wall position to exactly the edge of the 
+                //left screen incase the wall moves a bit past the edge.
+                leftWall.xCoordinate = 0;
+
+                //Left wall has finished transitioning
                 leftWall.FinishedTransition = true;
             }
 
+            //Update left wall
             leftWall.Update(gameTime);
 
+            //Create a slide in transition of right wall
             if (rightWall.xCoordinate > viewport.Width - rightWall.Width)
             {
                 rightWall.xCoordinate -= (float)(rightWall.horizontalScrollSpeed * gameTime.ElapsedGameTime.TotalSeconds);
             }
             else
             {
+                //Set the wall position to exactly the edge of the 
+                //right screen incase the wall moves a bit past the edge.
+                rightWall.xCoordinate = viewport.Width - rightWall.Width;
+
+                //Right wall has finished transitioning
                 rightWall.FinishedTransition = true;
             }
 
+            //Update right wall
             rightWall.Update(gameTime);
 
             FinishedWallTransition = leftWall.FinishedTransition && rightWall.FinishedTransition;
