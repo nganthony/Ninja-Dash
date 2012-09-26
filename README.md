@@ -10,7 +10,7 @@ Super Shinobi is a 2D side scrolling game built with C# and XNA for Windows Phon
 4. Run the game with Windows Phone as the target.
 
 ## Screenshots
-![Screenshot 1](/Ninja-Dash/Screenshots/Screenshot1.png)
+![Screenshot 1](https://raw.github.com/nganthony/Ninja-Dash/master/Screenshots/Screenshot1.png)
 
 ## Credits
 Thanks to Joshua Sevilla for drawing some of the art assets!
