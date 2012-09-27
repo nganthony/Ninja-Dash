@@ -1,3 +1,9 @@
+#region File Description
+//-----------------------------------------------------------------------------
+// Copyright (C) Anthony Ng. All rights reserved.
+//-----------------------------------------------------------------------------
+#endregion
+
 using System;
 using GameStateManagement;
 using Microsoft.Xna.Framework.Graphics;
