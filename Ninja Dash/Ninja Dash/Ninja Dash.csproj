@@ -20,7 +20,7 @@
     <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
     <XnaWindowsPhoneManifestTemplate>Properties\WMAppManifest.xml</XnaWindowsPhoneManifestTemplate>
     <TileImage>Background.png</TileImage>
-    <TileTitle>Ninja_Dash</TileTitle>
+    <TileTitle>Super Shinobi</TileTitle>
     <SupportedCultures>
     </SupportedCultures>
     <ApplicationIcon>Game.ico</ApplicationIcon>
@@ -137,10 +137,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
+    <Content Include="Background.png" />
     <Content Include="GameThumbnail.png" />
-    <Content Include="Background.png">
-      <XnaPlatformSpecific>true</XnaPlatformSpecific>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ninja DashContent\Ninja DashContent.contentproj">

@@ -162,13 +162,13 @@ namespace Ninja_Dash
             obstacleTimeDifference = 200;
 
             numOfObjects = EnemyWithObject.NumberOfObjects.One;
-
-            //AudioManager.PlayMusic("GameplayMusic");
         }
 
         public override void LoadContent()
         {
             viewport = ScreenManager.Game.GraphicsDevice.Viewport;
+
+            AudioManager.PlayMusic("GameplayMusic");
 
             //Animation store initialization
             animationStore = new AnimationStore();
@@ -1275,9 +1275,9 @@ namespace Ninja_Dash
         void DrawBackground()
         {
             staticLayer.Draw();
-            mistLayer2.Draw();
+            //mistLayer2.Draw();
             mountainLayer2.Draw();
-            mistLayer1.Draw();
+            //mistLayer1.Draw();
             mountainLayer1.Draw();
             castleLayer.Draw();
 

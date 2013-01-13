@@ -26,6 +26,8 @@ namespace Ninja_Dash
     {
         #region Fields
 
+        Viewport viewport;
+
         static readonly string HighScoreFilename = "highscores.txt";
 
         const int highscorePlaces = 5;
@@ -43,10 +45,29 @@ namespace Ninja_Dash
                 ("----",0),
         };
 
+        //Textures
+        Texture2D highscoreTexture;
+        Texture2D buttonBackTexture;
+
+        //Fonts
         SpriteFont highScoreFont;
+
+        //Buttons
+        Button buttonBack;
 
         Dictionary<int, string> numberPlaceMapping;
 
+
+        #endregion
+
+        #region Button Event Handlers
+
+        //Back button event handler
+        public void buttonBack_Selected(object sender, EventArgs e)
+        {
+            //Go to main menu screen
+            ScreenManager.RemoveScreen(this);
+        }
 
         #endregion
 
@@ -71,7 +92,20 @@ namespace Ninja_Dash
         /// </summary>
         public override void LoadContent()
         {
+            //Initialize viewport
+            viewport = ScreenManager.Game.GraphicsDevice.Viewport;
+
+            highscoreTexture = Load<Texture2D>("Textures/HighscoreText");
+            buttonBackTexture = Load<Texture2D>("Textures/Buttons/ButtonBack");
             highScoreFont = Load<SpriteFont>("Fonts/MenuFont");
+
+            //Initialize back button
+            buttonBack = new Button();
+            buttonBack.Initialize(buttonBackTexture, new Vector2((viewport.Width / 2), 620), 1.0f);
+            buttonBack.Selected += new EventHandler(buttonBack_Selected);
+
+            //Add Menu Buttons
+            MenuButtons.Add(buttonBack);
 
             base.LoadContent();
         }
@@ -88,16 +122,21 @@ namespace Ninja_Dash
         /// <param name="gameTime">Game time information</param>
         public override void Draw(GameTime gameTime)
         {
-            ScreenManager.FadeBackBufferToBlack(0.8f);
+            ScreenManager.FadeBackBufferToBlack(0.9f);
+
+            Vector2 highscoreTexturePosition = new Vector2(240, 150);
 
             ScreenManager.SpriteBatch.Begin();
+
+            ScreenManager.SpriteBatch.Draw(highscoreTexture, highscoreTexturePosition, null, Color.White, 0.0f,
+                   new Vector2(highscoreTexture.Width / 2, highscoreTexture.Height), 1.0f, SpriteEffects.None, 0.0f);
 
             // Draw the highscores table
             for (int i = 0; i < highScore.Count; i++)
             {
                 if (!string.IsNullOrEmpty(highScore[i].Key))
                 {
-                    Vector2 numberPosition = new Vector2(80, i * 72 + 100);
+                    Vector2 numberPosition = new Vector2(80, i * 72 + 200);
                     // Draw place number
                     ScreenManager.SpriteBatch.DrawString(highScoreFont, GetPlaceString(i),
                         numberPosition + new Vector2(4, 4), Color.Black);
@@ -105,14 +144,14 @@ namespace Ninja_Dash
                         numberPosition, Color.White);
 
                     //Note: Uncomment this to display names for highscores
-                    Vector2 namePosition = new Vector2(320, i * 72 + 100);
+                    Vector2 namePosition = new Vector2(200, i * 72 + 200);
                     // Draw Name
                     ScreenManager.SpriteBatch.DrawString(highScoreFont, highScore[i].Key,
                         namePosition + new Vector2(4, 4), Color.Black);
                     ScreenManager.SpriteBatch.DrawString(highScoreFont, highScore[i].Key,
                         namePosition, Color.White);
 
-                    Vector2 scorePosition = new Vector2(320, i * 72 + 100);
+                    Vector2 scorePosition = new Vector2(370, i * 72 + 200);
                     // Draw score
                     ScreenManager.SpriteBatch.DrawString(highScoreFont, highScore[i].Value.ToString(),
                         scorePosition + new Vector2(4, 4), Color.Black);

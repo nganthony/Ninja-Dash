@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Ninja Dash")]
-[assembly: AssemblyProduct("Ninja Dash")]
+[assembly: AssemblyTitle("Super Shinobi")]
+[assembly: AssemblyProduct("Super Shinobi")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2012")]
+[assembly: AssemblyCompany("ReArranged Gaming")]
+[assembly: AssemblyCopyright("Copyright © ReArranged Gaming 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
