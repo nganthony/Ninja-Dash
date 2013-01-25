@@ -41,6 +41,7 @@ Content\Textures\Backgrounds\BackgroundMountainLayer2.xnb
 Content\Textures\Backgrounds\BackgroundMist3.xnb
 Content\Textures\Backgrounds\BackgroundMist4.xnb
 Content\Textures\Player\Run.xnb
+Content\Textures\HighscoreText.xnb
 Content\Sounds\Shuriken_Metal_Hit.xnb
 Content\Sounds\GameplayMusic.xnb
 Content\Sounds\Game_Over.xnb
@@ -55,8 +56,4 @@ Content\Sounds\PlayerFall.xnb
 Content\Sounds\PlayerJump.xnb
 Content\Sounds\GemCollected.xnb
 Content\Sounds\HorizontalEnemyHit.xnb
-Content\Textures\HighscoreText.xnb
-Content\Textures\Buttons\ButtonSoundOn.xnb
-Content\Textures\Buttons\ButtonSoundOff.xnb
-Content\Textures\Buttons\ButtonHelp.xnb
 Content\Sounds\GameplayMusic.wma

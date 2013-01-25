@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input.Touch;
 using System.Diagnostics;
+using System.IO.IsolatedStorage;
 
 namespace Ninja_Dash
 {
@@ -19,6 +20,8 @@ namespace Ninja_Dash
         #region Fields
 
         Viewport viewport;
+
+        IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
 
         //Textures
         Texture2D backgroundTexture;
@@ -31,10 +34,15 @@ namespace Ninja_Dash
         //Button textures
         Texture2D buttonHighscoresTexture;
         Texture2D buttonOptionsTexture;
+        Texture2D buttonSoundOnTexture;
+        Texture2D buttonSoundOffTexture;
+        Texture2D buttonHelpTexture;
 
         //Buttons
         Button buttonHighscores;
         Button buttonOptions;
+        Button buttonSound;
+        Button buttonHelp;
 
         //Alpha variables for fade in, fade out text
         float mAlphaFactor = 0.0f;
@@ -51,6 +59,10 @@ namespace Ninja_Dash
 
         GameplayScreen gameplayScreen;
 
+        public bool showingHighScoreScreen = false;
+
+        public static bool IsSoundOn = true;
+
         #endregion
 
         #region Initialization
@@ -61,6 +73,12 @@ namespace Ninja_Dash
             gameStarted = false;
 
             this.gameplayScreen = gameplayScreen;
+
+            if(!settings.Contains("IsSoundOn"))
+            {
+                settings.Add("IsSoundOn", IsSoundOn);
+                settings.Save();
+            }
         }
 
         public override void LoadContent()
@@ -73,23 +91,80 @@ namespace Ninja_Dash
             stringPosition = new Vector2(viewport.Width / 2, 480);
             backgroundPosition = Vector2.Zero;
 
+            //Initialize button textures
             buttonHighscoresTexture = Load<Texture2D>("Textures/Buttons/ButtonHighscores");
             buttonOptionsTexture = Load<Texture2D>("Textures/Buttons/ButtonOptions");
+            buttonSoundOnTexture = Load<Texture2D>("Textures/Buttons/ButtonSoundOn");
+            buttonSoundOffTexture = Load<Texture2D>("Textures/Buttons/ButtonSoundOff");
+            buttonHelpTexture = Load<Texture2D>("Textures/Buttons/ButtonHelp");
 
             float yButtonPosition = 700;
 
+            //Initialize high scores button
             buttonHighscores = new Button();
-            buttonHighscores.Initialize(buttonHighscoresTexture, new Vector2((viewport.Width / 2) - 50, yButtonPosition), 0.9f);
+            buttonHighscores.Initialize(buttonHighscoresTexture, new Vector2((viewport.Width / 2) - 150, yButtonPosition), 0.9f);
             buttonHighscores.Selected += new EventHandler(buttonHighscores_Selected);
 
+            //Initialize options button
             buttonOptions = new Button();
-            buttonOptions.Initialize(buttonOptionsTexture, new Vector2((viewport.Width / 2) + 50, yButtonPosition), 0.9f);
+            buttonOptions.Initialize(buttonOptionsTexture, new Vector2((viewport.Width / 2) - 50, yButtonPosition), 0.9f);
             buttonOptions.Selected += new EventHandler(buttonOptions_Selected);
 
+            //Initialize sound button
+            buttonSound = new Button();
+            buttonSound.Initialize(buttonSoundOnTexture, new Vector2((viewport.Width / 2) + 50, yButtonPosition), 0.9f);
+            buttonSound.Selected +=new EventHandler(buttonSound_Selected);
+
+            settings.TryGetValue<bool>("IsSoundOn", out IsSoundOn);
+
+            if (IsSoundOn)
+            {
+                buttonSound.ButtonTexture = buttonSoundOnTexture;
+            }
+            else
+            {
+                buttonSound.ButtonTexture = buttonSoundOffTexture;
+            }
+
+            //Initialize help button
+            buttonHelp = new Button();
+            buttonHelp.Initialize(buttonHelpTexture, new Vector2((viewport.Width / 2) + 150, yButtonPosition), 0.9f);
+            buttonHelp.Selected += new EventHandler(buttonHelp_Selected);
+
+            //Add menu buttons to list
             MenuButtons.Add(buttonHighscores);
             MenuButtons.Add(buttonOptions);
+            MenuButtons.Add(buttonSound);
+            MenuButtons.Add(buttonHelp);
 
             base.LoadContent();
+        }
+
+        void buttonHelp_Selected(object sender, EventArgs e)
+        {
+            
+        }
+
+        void buttonSound_Selected(object sender, EventArgs e)
+        {
+            settings.TryGetValue<bool>("IsSoundOn", out IsSoundOn);
+
+            if (IsSoundOn)
+            {
+                IsSoundOn = false;
+                buttonSound.ButtonTexture = buttonSoundOffTexture;
+                AudioManager.StopMusic();
+            }
+            else
+            {
+                IsSoundOn = true;
+                buttonSound.ButtonTexture = buttonSoundOnTexture;
+                AudioManager.PlayMusic("GameplayMusic");
+            }
+
+            settings.Remove("IsSoundOn");
+            settings.Add("IsSoundOn", IsSoundOn);
+            settings.Save();
         }
 
         void buttonOptions_Selected(object sender, EventArgs e)
@@ -99,7 +174,8 @@ namespace Ninja_Dash
 
         void buttonHighscores_Selected(object sender, EventArgs e)
         {
-            ScreenManager.AddScreen(new HighScoreScreen(), null);
+            showingHighScoreScreen = true;
+            ScreenManager.AddScreen(new HighScoreScreen(this), null);
         }
 
         #endregion
@@ -200,19 +276,26 @@ namespace Ninja_Dash
 
             spriteBatch.Begin();
 
-            //Draw main menu background
-            spriteBatch.Draw(backgroundTexture, backgroundPosition, null, Color.White, 0f,
-               Vector2.Zero, 1f, SpriteEffects.None, 1f);
-
-            if (!gameStarted)
+            if (!showingHighScoreScreen)
             {
-                spriteBatch.Draw(stringTexture, stringPosition, null, new Color(255, 255, 255, (byte)MathHelper.Clamp(255, 0, 255)) * mAlphaFactor, 0f,
-                   new Vector2(stringTexture.Width / 2, stringTexture.Height / 2), 1f, SpriteEffects.None, 1f);
+                //Draw main menu background
+                spriteBatch.Draw(backgroundTexture, backgroundPosition, null, Color.White, 0f,
+                   Vector2.Zero, 1f, SpriteEffects.None, 1f);
+
+                if (!gameStarted)
+                {
+                    spriteBatch.Draw(stringTexture, stringPosition, null, new Color(255, 255, 255, (byte)MathHelper.Clamp(255, 0, 255)) * mAlphaFactor, 0f,
+                       new Vector2(stringTexture.Width / 2, stringTexture.Height / 2), 1f, SpriteEffects.None, 1f);
+                }
             }
 
             spriteBatch.End();
 
-            base.Draw(gameTime);
+            //Do not show the menu buttons if high score screen is showing
+            if (!showingHighScoreScreen)
+            {
+                base.Draw(gameTime);
+            }
         }
 
         #endregion

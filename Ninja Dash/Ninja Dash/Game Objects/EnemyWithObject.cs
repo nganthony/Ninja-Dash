@@ -81,7 +81,7 @@ namespace Ninja_Dash
 
                 case NumberOfObjects.Two:
                     ninjaStar1.Velocity = new Vector2(150, 0);
-                    ninjaStar2.Velocity = new Vector2(150, -60);
+                    ninjaStar2.Velocity = new Vector2(150, -115);
                     break;
             }
         }

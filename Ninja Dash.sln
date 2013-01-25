@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010 Express for Windows Phone
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Phone
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninja Dash", "Ninja Dash\Ninja Dash\Ninja Dash.csproj", "{5780B80D-393F-4170-9F2D-8C898898E71F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninja DashContent", "Ninja Dash\Ninja DashContent\Ninja DashContent.contentproj", "{393FADB4-4217-428F-8646-DF7289ADB6F8}"

@@ -168,7 +168,11 @@ namespace Ninja_Dash
             // If the sound exists, start it
             if (audioManager.soundBank.ContainsKey(soundName))
             {
-                audioManager.soundBank[soundName].Play();
+                //Check if the sound preference is on
+                if (MainMenuScreen.IsSoundOn)
+                {
+                    audioManager.soundBank[soundName].Play();
+                }
             }
         }
 

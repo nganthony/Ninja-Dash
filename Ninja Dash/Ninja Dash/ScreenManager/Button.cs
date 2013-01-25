@@ -24,6 +24,12 @@ namespace GameStateManagement
 
         float scale;
 
+        public Texture2D ButtonTexture
+        {
+            get { return buttonTexture; }
+            set { buttonTexture = value; }
+        }
+
         public Color Color
         {
             get { return color; }
@@ -83,8 +89,8 @@ namespace GameStateManagement
         //Initializes the button texture and button position
         public void Initialize(Texture2D texture, Vector2 position, float scale)
         {
-            buttonTexture = texture;
             buttonPosition = position;
+            buttonTexture = texture;
             this.scale = scale;
         }
 

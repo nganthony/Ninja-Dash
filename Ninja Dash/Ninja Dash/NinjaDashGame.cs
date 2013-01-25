@@ -89,6 +89,13 @@ namespace Ninja_Dash
             AudioManager.LoadMusic();
             AudioManager.LoadSounds();
             // TODO: use this.Content to load your game content here
+
+            //Check if the sound preference is on
+            if (MainMenuScreen.IsSoundOn)
+            {
+                //Play music
+                AudioManager.PlayMusic("GameplayMusic");
+            }
         }
 
         /// <summary>

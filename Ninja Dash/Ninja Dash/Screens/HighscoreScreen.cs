@@ -57,6 +57,8 @@ namespace Ninja_Dash
 
         Dictionary<int, string> numberPlaceMapping;
 
+        //Main menu screen the high score screen is associated with
+        MainMenuScreen mainMenuScreen;
 
         #endregion
 
@@ -65,8 +67,20 @@ namespace Ninja_Dash
         //Back button event handler
         public void buttonBack_Selected(object sender, EventArgs e)
         {
-            //Go to main menu screen
+            GoToMainMenuScreen();
+        }
+
+        //Event handler for hardware back button
+        protected override void OnCancel(PlayerIndex playerIndex)
+        {
+            GoToMainMenuScreen();
+        }
+
+        //Goes back to the main menu screen
+        public void GoToMainMenuScreen()
+        {
             ScreenManager.RemoveScreen(this);
+            mainMenuScreen.showingHighScoreScreen = false;
         }
 
         #endregion
@@ -77,12 +91,12 @@ namespace Ninja_Dash
         /// <summary>
         /// Creates a new highscore screen instance.
         /// </summary>
-        public HighScoreScreen()
+        public HighScoreScreen(MainMenuScreen mainMenuScreen)
         {
             EnabledGestures = GestureType.Tap;
 
             IsPopup = true;
-
+            this.mainMenuScreen = mainMenuScreen;
             numberPlaceMapping = new Dictionary<int, string>();
             initializeMapping();
         }
@@ -99,9 +113,11 @@ namespace Ninja_Dash
             buttonBackTexture = Load<Texture2D>("Textures/Buttons/ButtonBack");
             highScoreFont = Load<SpriteFont>("Fonts/MenuFont");
 
+            LoadHighscores();
+
             //Initialize back button
             buttonBack = new Button();
-            buttonBack.Initialize(buttonBackTexture, new Vector2((viewport.Width / 2), 620), 1.0f);
+            buttonBack.Initialize(buttonBackTexture, new Vector2((viewport.Width / 2), 700), 1.0f);
             buttonBack.Selected += new EventHandler(buttonBack_Selected);
 
             //Add Menu Buttons
@@ -122,9 +138,10 @@ namespace Ninja_Dash
         /// <param name="gameTime">Game time information</param>
         public override void Draw(GameTime gameTime)
         {
-            ScreenManager.FadeBackBufferToBlack(0.9f);
+            Vector2 highscoreTexturePosition = new Vector2(240, 200);
 
-            Vector2 highscoreTexturePosition = new Vector2(240, 150);
+            //Create a fade effect when the screen is transitioning on
+            ScreenManager.FadeBackBufferToBlack(TransitionPosition);
 
             ScreenManager.SpriteBatch.Begin();
 
@@ -136,7 +153,7 @@ namespace Ninja_Dash
             {
                 if (!string.IsNullOrEmpty(highScore[i].Key))
                 {
-                    Vector2 numberPosition = new Vector2(80, i * 72 + 200);
+                    Vector2 numberPosition = new Vector2(70, i * 72 + 250);
                     // Draw place number
                     ScreenManager.SpriteBatch.DrawString(highScoreFont, GetPlaceString(i),
                         numberPosition + new Vector2(4, 4), Color.Black);
@@ -144,14 +161,14 @@ namespace Ninja_Dash
                         numberPosition, Color.White);
 
                     //Note: Uncomment this to display names for highscores
-                    Vector2 namePosition = new Vector2(200, i * 72 + 200);
+                    Vector2 namePosition = new Vector2(190, i * 72 + 250);
                     // Draw Name
                     ScreenManager.SpriteBatch.DrawString(highScoreFont, highScore[i].Key,
                         namePosition + new Vector2(4, 4), Color.Black);
                     ScreenManager.SpriteBatch.DrawString(highScoreFont, highScore[i].Key,
                         namePosition, Color.White);
 
-                    Vector2 scorePosition = new Vector2(370, i * 72 + 200);
+                    Vector2 scorePosition = new Vector2(350, i * 72 + 250);
                     // Draw score
                     ScreenManager.SpriteBatch.DrawString(highScoreFont, highScore[i].Value.ToString(),
                         scorePosition + new Vector2(4, 4), Color.Black);

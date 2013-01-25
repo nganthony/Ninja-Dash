@@ -108,8 +108,17 @@ namespace Ninja_Dash
         //Dictionary of counters of items collected
         public Dictionary<string, int> ItemsCollected;
 
-        //Counter of gems collected
+        //Counter of gems collected, this can reset back to 0 when 50 gems have been collected
         public int GemsCollected = 0;
+
+        //Counter of total gems collected for one game
+        public int AccumulatedGems = 0;
+
+        //Counter of shields used for one game
+        public int AccumulatedShieldsUsed = 0;
+
+        //Counter of total number of power ups used for one game
+        public int AccumulatedPowerUpsUsed = 0;
 
         public bool FinishedTransition = false;
 
@@ -262,6 +271,7 @@ namespace Ninja_Dash
                         ItemsCollected["NinjaStars"] = 0;
                         elapsedPowerUpTime = TimeSpan.Zero;
                         LiftOffSoundPlayed = false;
+                        AccumulatedPowerUpsUsed++;
                     }
                     break;
 
@@ -352,6 +362,7 @@ namespace Ninja_Dash
                 horizontalPowerUpCount = 0;
                 flightTime = 0;
                 ItemsCollected["HorizontalEnemies"] = 0;
+                AccumulatedPowerUpsUsed++;
 
                 //Put the player in correct state based on number of jumps and
                 //the direction which the player was initially heading
@@ -444,6 +455,7 @@ namespace Ninja_Dash
                 ShieldOn = true;
                 AudioManager.PlaySound("ShieldOn");
                 GemsCollected -= 50;
+                AccumulatedShieldsUsed++;
             }
         }
 

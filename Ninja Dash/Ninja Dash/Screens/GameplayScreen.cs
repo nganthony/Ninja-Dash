@@ -168,8 +168,6 @@ namespace Ninja_Dash
         {
             viewport = ScreenManager.Game.GraphicsDevice.Viewport;
 
-            AudioManager.PlayMusic("GameplayMusic");
-
             //Animation store initialization
             animationStore = new AnimationStore();
             animationStore.Initialize(ScreenManager.Game.Content);
@@ -516,6 +514,7 @@ namespace Ninja_Dash
 
                 //Reset flying objects collected
                 player.ItemsCollected["FlyingObjects"] = 0;
+                player.AccumulatedPowerUpsUsed++;
             }
 
             else if (randomNumber <= 3)
@@ -990,7 +989,12 @@ namespace Ninja_Dash
                 {
                     AudioManager.PlaySound("GemCollected");
                     gems[i].Active = false;
+
+                    //Add to gems in storage so far (can reset to 0 if 50 have been collected)
                     player.GemsCollected++;
+
+                    //Add to total gems collected so far
+                    player.AccumulatedGems++;
                 }
             }
         }
@@ -1076,7 +1080,7 @@ namespace Ninja_Dash
                     if (!Guide.IsVisible)
                     {
                         Guide.BeginShowKeyboardInput(PlayerIndex.One,
-                            "YOU GOT A HIGH SCORE!", "What is your name (max 8 characters)?", "Player",
+                            "YOU GOT A HIGH SCORE!", "What is your name (max 6 characters)?", "Player",
                                 AfterPlayerEnterName, null);
                     }
                 }
@@ -1086,7 +1090,6 @@ namespace Ninja_Dash
                 }
 
                 AudioManager.PlaySound("Game_Over");
-                AudioManager.StopMusic();
                 gameOver = true;
             }
         }
@@ -1097,6 +1100,13 @@ namespace Ninja_Dash
 
             //Keep track of the final score
             gameOverScreen.FinalPlayerScore = score;
+
+            //Keep track of total gems collected
+            gameOverScreen.TotalGemsCollected = player.AccumulatedGems;
+
+            gameOverScreen.TotalPowerUpsUsed = player.AccumulatedPowerUpsUsed;
+
+            gameOverScreen.TotalShieldsUsed = player.AccumulatedShieldsUsed;
 
             //Remove the gameplay screen and add the gameover screen
             ScreenManager.AddScreen(gameOverScreen, null);
@@ -1110,9 +1120,9 @@ namespace Ninja_Dash
             if (!string.IsNullOrEmpty(playerName))
             {
                 // Ensure that it is valid
-                if (playerName != null && playerName.Length > 8)
+                if (playerName != null && playerName.Length > 6)
                 {
-                    playerName = playerName.Substring(0, 8);
+                    playerName = playerName.Substring(0, 6);
                 }
 
                 // Puts it in high score
