@@ -15,7 +15,7 @@ namespace Ninja_Dash
         Vector2 leftPosition;
         Vector2 rightPosition;
 
-        static Vector2 flyingEnemyVelocity = new Vector2(150, 0);
+        static Vector2 flyingEnemyVelocity = new Vector2(350, 0);
 
         //Random number generator
         Random random;
@@ -25,8 +25,8 @@ namespace Ninja_Dash
         {
             random = new Random();
 
-            leftPosition = new Vector2(0, relativePlayer.Position.Y - 500);
-            rightPosition = new Vector2(game.GraphicsDevice.Viewport.Width, relativePlayer.Position.Y - 500);
+            leftPosition = new Vector2(0, relativePlayer.Position.Y - 700);
+            rightPosition = new Vector2(game.GraphicsDevice.Viewport.Width, relativePlayer.Position.Y - 700);
 
             int randomNumber = random.Next(1, 10);
 

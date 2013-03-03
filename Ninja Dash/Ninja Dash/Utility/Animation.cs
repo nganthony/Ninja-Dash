@@ -39,6 +39,10 @@ namespace Ninja_Dash
         //The height of the frame
         public int FrameHeight;
 
+        public int ScaledWidth;
+
+        public int ScaledHeight;
+
         //Should we keep on looping the animation?
         bool IsRepeat;
 
@@ -67,6 +71,8 @@ namespace Ninja_Dash
             this.Scale = scale;
             this.FrameWidth = frameWidth;
             this.FrameHeight = frameHeight;
+            this.ScaledWidth = (int)(frameWidth * scale);
+            this.ScaledHeight = (int)(frameHeight * scale);
 
             Active = true;
             elapsedTime = 0;

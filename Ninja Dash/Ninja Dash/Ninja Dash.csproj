@@ -20,7 +20,7 @@
     <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
     <XnaWindowsPhoneManifestTemplate>Properties\WMAppManifest.xml</XnaWindowsPhoneManifestTemplate>
     <TileImage>Background.png</TileImage>
-    <TileTitle>Super Shinobi</TileTitle>
+    <TileTitle>Shinobi Reborn</TileTitle>
     <SupportedCultures>
     </SupportedCultures>
     <ApplicationIcon>Game.ico</ApplicationIcon>
@@ -96,16 +96,6 @@
     <Compile Include="Game Objects\Layer.cs" />
     <Compile Include="Game Objects\Obstacle.cs" />
     <Compile Include="Game Objects\Wall.cs" />
-    <Compile Include="GameDebugTools\DebugCommandUI.cs" />
-    <Compile Include="GameDebugTools\DebugManager.cs" />
-    <Compile Include="GameDebugTools\DebugSystem.cs" />
-    <Compile Include="GameDebugTools\FpsCounter.cs" />
-    <Compile Include="GameDebugTools\IDebugCommandHost.cs" />
-    <Compile Include="GameDebugTools\KeyboardUtils.cs" />
-    <Compile Include="GameDebugTools\Layout.cs" />
-    <Compile Include="GameDebugTools\RemoteDebugCommand.cs" />
-    <Compile Include="GameDebugTools\StringBuilderExtensions.cs" />
-    <Compile Include="GameDebugTools\TimeRuler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenManager\Button.cs" />
     <Compile Include="ScreenManager\GameScreen.cs" />
@@ -114,13 +104,11 @@
     <Compile Include="ScreenManager\MenuScreen.cs" />
     <Compile Include="ScreenManager\PlayerIndexEventArgs.cs" />
     <Compile Include="ScreenManager\ScreenManager.cs" />
-    <Compile Include="Screens\CreditsScreen.cs" />
     <Compile Include="Screens\GameoverScreen.cs" />
     <Compile Include="Screens\GameplayScreen.cs" />
     <Compile Include="Screens\HighscoreScreen.cs" />
     <Compile Include="Screens\LoadingScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
-    <Compile Include="Screens\OptionsScreen.cs" />
     <Compile Include="Screens\SplashScreen.cs" />
     <Compile Include="Screens\TutorialScreen.cs" />
     <Compile Include="Utility\Animation.cs" />
@@ -132,14 +120,15 @@
     </None>
     <None Include="Properties\WMAppManifest.xml">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
+      <SubType>Designer</SubType>
     </None>
     <Compile Include="Program.cs" />
     <Compile Include="NinjaDashGame.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
-    <Content Include="Background.png" />
     <Content Include="GameThumbnail.png" />
+    <Content Include="Background.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ninja DashContent\Ninja DashContent.contentproj">

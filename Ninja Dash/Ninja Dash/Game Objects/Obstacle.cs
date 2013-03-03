@@ -108,7 +108,7 @@ namespace Ninja_Dash
         public void Update(GameTime gameTime)
         {
             //Set obstacle to inactive when it exceeds the screen
-            if (initialYPosition - player.Position.Y > viewport.Height + 1000)
+            if (initialYPosition - player.Position.Y > viewport.Height * 3)
             {
                 Active = false;
             }

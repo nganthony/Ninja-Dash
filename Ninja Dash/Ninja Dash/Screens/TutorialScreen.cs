@@ -12,12 +12,18 @@ using GameStateManagement;
 
 namespace Ninja_Dash
 {
-    class TutorialScreen : GameScreen
+    class TutorialScreen : MenuScreen
     {
         #region Fields
 
+        Viewport viewport;
+
         //Texture for tutorial screen
         Texture2D tutorialTexture;
+        Texture2D buttonBackTexture;
+
+        //Buttons
+        Button buttonBack;
 
         #endregion
 
@@ -30,37 +36,35 @@ namespace Ninja_Dash
 
         public override void LoadContent()
         {
-            //tutorialTexture = Load<Texture2D>("Textures/tutorialscreen");
+            //Initialize viewport
+            viewport = ScreenManager.Game.GraphicsDevice.Viewport;
+
+            tutorialTexture = Load<Texture2D>("Textures/TutorialScreen");
+            buttonBackTexture = Load<Texture2D>("Textures/Buttons/ButtonBack");
+
+            //Initialize back button
+            buttonBack = new Button();
+            buttonBack.Initialize(buttonBackTexture, new Vector2(50, viewport.Height - 50), 1.0f);
+            buttonBack.Selected += new EventHandler(buttonBack_Selected);
+
+            //Add Menu Buttons
+            MenuButtons.Add(buttonBack);
         }
 
         #endregion
 
+        //Back button event handler
+        public void buttonBack_Selected(object sender, EventArgs e)
+        {
+            Exit();
+        }
+
         #region Handle Input
 
-        public override void HandleInput(InputState input)
+        //Event handler for hardware back button
+        protected override void OnCancel(PlayerIndex playerIndex)
         {
-            if (input == null)
-            {
-                throw new ArgumentNullException("input");
-            }
-
-            //Go back to the previous screen if the player presses the back button
-            if (input.IsPauseGame(null))
-            {
-                Exit();
-            }
-
-            // Return to the main menu when a tap gesture is recognized
-            if (input.Gestures.Count > 0)
-            {
-                GestureSample sample = input.Gestures[0];
-                if (sample.GestureType == GestureType.Tap)
-                {
-                    Exit();
-
-                    input.Gestures.Clear();
-                }
-            }
+            Exit();
         }
 
         #endregion
@@ -73,7 +77,6 @@ namespace Ninja_Dash
         private void Exit()
         {
             ScreenManager.RemoveScreen(this);
-            //ScreenManager.AddScreen(new MainMenuScreen(), null);
         }
 
         #endregion
@@ -85,9 +88,14 @@ namespace Ninja_Dash
             ScreenManager.SpriteBatch.Begin();
 
             //Draw the tutorial texture onto the screen
-            //ScreenManager.SpriteBatch.Draw(tutorialTexture, Vector2.Zero, new Color(255, 255, 255, TransitionAlpha));
+            ScreenManager.SpriteBatch.Draw(tutorialTexture, Vector2.Zero, Color.White);
 
             ScreenManager.SpriteBatch.End();
+
+            //Create a fade effect when the screen is transitioning on
+            ScreenManager.FadeBackBufferToBlack(TransitionPosition);
+
+            base.Draw(gameTime);
         }
 
         #endregion

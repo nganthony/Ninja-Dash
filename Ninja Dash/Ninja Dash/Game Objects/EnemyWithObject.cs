@@ -31,7 +31,11 @@ namespace Ninja_Dash
         public FlyingObject ninjaStar1;
         public FlyingObject ninjaStar2;
 
+        public List<FlyingObject> flyingObjects = new List<FlyingObject>();
+
         bool soundEffectPlayed;
+
+        public bool CollidedWithPlayer = false;
 
         public EnemyWithObject(Game game, Player player, SpriteBatch spriteBatch, NumberOfObjects numberOfObjects, AnimationStore animationStore)
             : base(game, new Animation(animationStore["EnemyRun"]), player, spriteBatch)
@@ -44,7 +48,7 @@ namespace Ninja_Dash
             this.animationStore = animationStore;
 
             totalTimeElapsed = TimeSpan.Zero;
-            timeDelay = TimeSpan.FromSeconds(0.45);
+            timeDelay = TimeSpan.FromSeconds(0.10);
 
             soundEffectPlayed = false;
         }
@@ -72,16 +76,19 @@ namespace Ninja_Dash
             ninjaStar2 = new FlyingObject(curGame, spriteBatch, new Animation(animationStore["NinjaStar"]),
                        Position, flip, Vector2.Zero, objectDirection);
 
+            flyingObjects.Add(ninjaStar1);
+            flyingObjects.Add(ninjaStar2);
+
             switch (numberOfObjects)
             {
                 case NumberOfObjects.One:
-                    ninjaStar1.Velocity = new Vector2(150, 0);
+                    ninjaStar1.Velocity = new Vector2(230, -30);
                     ninjaStar2.Active = false;
                     break;
 
                 case NumberOfObjects.Two:
-                    ninjaStar1.Velocity = new Vector2(150, 0);
-                    ninjaStar2.Velocity = new Vector2(150, -115);
+                    ninjaStar1.Velocity = new Vector2(230, -110);
+                    ninjaStar2.Velocity = new Vector2(230, 80);
                     break;
             }
         }
@@ -129,7 +136,10 @@ namespace Ninja_Dash
                 ninjaStar2.Draw();
             }
 
-            base.Draw();
+            if (!CollidedWithPlayer)
+            {
+                base.Draw();
+            }
         }
     }
 }

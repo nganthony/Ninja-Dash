@@ -37,6 +37,8 @@ namespace Ninja_Dash
         //Player animations
         Animation runAnimation;
         Animation jumpAnimation;
+        Animation fallAnimation;
+        Animation idleFallAnimation;
         Animation rocketshipAnimation;
         Animation centralAnimation;
         Animation shieldAnimation;
@@ -82,11 +84,11 @@ namespace Ninja_Dash
         public float marginRight;
 
         //Jump motion values
-        Vector2 jumpVelocity = new Vector2(730, 610);
+        Vector2 jumpVelocity = new Vector2(730, 860);
         float jumpGravity = 800;
 
         //Fall motion values
-        Vector2 fallVelocity = new Vector2(100, 0);
+        Vector2 fallVelocity = new Vector2(50, 0);
         const float fallGravity = 620;
 
         //Horizontal enemy power up variables
@@ -101,7 +103,7 @@ namespace Ninja_Dash
         public Vector2 StartMotionPosition;
 
         //Camera speeds
-        public uint runSpeed = 450;
+        public uint runSpeed = 700;
         public const uint fallSpeed = 600;
         public const uint ninjaStarPowerUpSpeed = 1050;
 
@@ -122,6 +124,10 @@ namespace Ninja_Dash
 
         public bool FinishedTransition = false;
 
+        TimeSpan elapsedHitTime = TimeSpan.Zero;
+        //Time to initiate fall animation, based on how long the idle fall animation lasts for
+        TimeSpan initiateFallAnimationTime = TimeSpan.FromSeconds(0.48);
+
         #endregion
 
         #region Properties
@@ -131,12 +137,12 @@ namespace Ninja_Dash
 
         public int Width
         {
-            get { return centralAnimation.FrameWidth; }
+            get { return centralAnimation.ScaledWidth; }
         }
 
         public int Height
         {
-            get { return centralAnimation.FrameHeight; }
+            get { return centralAnimation.ScaledHeight; }
         }
 
         public Rectangle CollisionRectangle
@@ -145,6 +151,9 @@ namespace Ninja_Dash
             {
                 collisionRectangle = new Rectangle((int)Position.X - Width / 2, 
                     (int)Position.Y - Height / 2, Width, Height);
+
+                //Make collision rectangle smaller so that it is more lenient with hit detection
+                collisionRectangle.Inflate(-20, -20);
 
                 return collisionRectangle;
             }
@@ -184,6 +193,8 @@ namespace Ninja_Dash
             //Initialize animations
             runAnimation = new Animation(animationStore["PlayerRun"]);
             jumpAnimation = new Animation (animationStore["PlayerJump"]);
+            fallAnimation = new Animation(animationStore["PlayerFall"]);
+            idleFallAnimation = new Animation(animationStore["PlayerIdleFall"]);
             rocketshipAnimation = new Animation(animationStore["Rocketship"]);
             shieldAnimation = new Animation(animationStore["Shield"]);
 
@@ -295,6 +306,18 @@ namespace Ninja_Dash
                     break;
                     
                 case State.Hit:
+                    //Start keeping track of how much time has elapsed since player was hit
+                    elapsedHitTime += gameTime.ElapsedGameTime;
+
+                    if (elapsedHitTime < initiateFallAnimationTime)
+                    {
+                        centralAnimation = idleFallAnimation;
+                    }
+                    else
+                    {
+                        centralAnimation = fallAnimation;
+                    }
+
                     int direction = (DirectionState == State.RunLeft) ? 1 : -1;
 
                     UpdatePlayerTrajectoryMotion(direction, gameTime, fallVelocity, fallGravity, 
@@ -543,12 +566,6 @@ namespace Ninja_Dash
             for (int i = itemCollectionStrings.Count - 1; i >= 0; i--)
             {
                 ItemsCollected[itemCollectionStrings[i]] = 0;
-            }
-
-            //Print results
-            foreach (KeyValuePair<string, int> entry in ItemsCollected)
-            {
-                Debug.WriteLine(entry.Key + ": " + entry.Value);
             }
         }
 

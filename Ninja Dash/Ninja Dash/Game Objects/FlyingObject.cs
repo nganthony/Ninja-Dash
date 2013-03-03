@@ -30,9 +30,9 @@ namespace Ninja_Dash
         {
             get
             {
-                Rectangle rect = new Rectangle((int)Position.X - spriteAnimation.FrameWidth / 2, 
-                    (int)Position.Y - spriteAnimation.FrameHeight / 2, 
-                    spriteAnimation.FrameWidth, spriteAnimation.FrameHeight);
+                Rectangle rect = new Rectangle((int)Position.X - spriteAnimation.ScaledWidth / 2, 
+                    (int)Position.Y - spriteAnimation.ScaledHeight / 2, 
+                    spriteAnimation.ScaledWidth, spriteAnimation.ScaledHeight);
 
                 return rect;
             }

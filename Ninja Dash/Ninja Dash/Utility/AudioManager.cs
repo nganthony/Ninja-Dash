@@ -123,8 +123,6 @@ namespace Ninja_Dash
             LoadSound("HorizontalEnemyHit", "HorizontalEnemyHit");
             LoadSound("Swoosh", "Swoosh");
             LoadSound("LiftOff", "LiftOff");
-            LoadSound("Footstep1", "Footstep1");
-            LoadSound("Footstep2", "Footstep2");
             LoadSound("ShieldOn", "ShieldOn");
         }
 

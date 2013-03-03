@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
-using PerformanceUtility.GameDebugTools;
 using System.Globalization;
 using Microsoft.Xna.Framework.GamerServices;
 
@@ -24,14 +23,11 @@ namespace Ninja_Dash
 
     public enum SpawnGemState { VerticalLeft, VerticalRight, Horizontal }
 
-    class GameplayScreen: GameScreen
+    class GameplayScreen: MenuScreen
     {
         #region Fields
 
         Viewport viewport;
-
-        //System used for debugging the game
-        DebugSystem debugSystem;
 
         //The main ninja player
         Player player;
@@ -45,6 +41,9 @@ namespace Ninja_Dash
         Texture2D mistLayerTexture2;
         Texture2D mountainLayerTexture1;
         Texture2D mountainLayerTexture2;
+        Texture2D horizontalEnemyPlatformTexture;
+        Texture2D pauseTextTexture;
+        Texture2D pauseButtonTexture;
 
         //Store containing all the animations used in the game
         AnimationStore animationStore;
@@ -117,15 +116,15 @@ namespace Ninja_Dash
 
         bool FinishedWallTransition = false;
 
+        Button pauseButton;
+        bool gamePaused = false;
+
         #endregion
 
         #region Initialize
 
         public GameplayScreen()
         {
-            //Gestures enabled for the screen
-            EnabledGestures = GestureType.Hold;
-
             TransitionOffTime = TimeSpan.FromSeconds(0.5f);
 
             //Initialize interval spawn time to 2 seconds
@@ -159,7 +158,7 @@ namespace Ninja_Dash
             numberOfObstacles = 1;
 
             //Set the distance between subsequent obstacles to 200 pixels
-            obstacleTimeDifference = 200;
+            obstacleTimeDifference = 0;
 
             numOfObjects = EnemyWithObject.NumberOfObjects.One;
         }
@@ -181,11 +180,24 @@ namespace Ninja_Dash
 
             LoadAssets();
 
-            //Initialize debug system
-            debugSystem = DebugSystem.Initialize(ScreenManager.Game, "Font");
+            pauseButton = new Button();
+            pauseButton.Initialize(pauseButtonTexture, new Vector2(30, 30), 1.3f);
+            pauseButton.Selected += new EventHandler(pauseButton_Selected);
+            MenuButtons.Add(pauseButton);
 
-            //Show FPS counter component
-            debugSystem.FpsCounter.Visible = true;
+            base.LoadContent();
+        }
+
+        void pauseButton_Selected(object sender, EventArgs e)
+        {
+            if (gamePaused)
+            {
+                gamePaused = false;
+            }
+            else
+            {
+                gamePaused = true;
+            }
         }
 
         public void LoadAssets()
@@ -259,8 +271,8 @@ namespace Ninja_Dash
             for (int i = 0; i < 3; i++)
             {
                 hudHorizontalEnemyAnimations.Add(new Animation(animationStore["HudHorizontalEnemy"]));
-                hudFlyingObjectAnimations.Add(new Animation(animationStore["HudNinjaStar"]));
-                hudNinjaStarsAnimations.Add(new Animation(animationStore["HudEnemy"]));
+                hudFlyingObjectAnimations.Add(new Animation(animationStore["HudKunai"]));
+                hudNinjaStarsAnimations.Add(new Animation(animationStore["HudNinjaStar"]));
             }
         }
 
@@ -275,6 +287,9 @@ namespace Ninja_Dash
             mistLayerTexture2 = ScreenManager.Game.Content.Load<Texture2D>("Textures/Backgrounds/BackgroundMist4");
             mountainLayerTexture1 = ScreenManager.Game.Content.Load<Texture2D>("Textures/Backgrounds/BackgroundMountainLayer1");
             mountainLayerTexture2 = ScreenManager.Game.Content.Load<Texture2D>("Textures/Backgrounds/BackgroundMountainLayer2");
+            horizontalEnemyPlatformTexture = ScreenManager.Game.Content.Load<Texture2D>("Textures/HorizontalEnemyPlatform");
+            pauseButtonTexture = Load<Texture2D>("Textures/pause");
+            pauseTextTexture = Load<Texture2D>("Textures/PauseText");
         }
 
         #endregion
@@ -287,57 +302,61 @@ namespace Ninja_Dash
 
             if (GameStarted)
             {
-                elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                if (FinishedWallTransition)
+                if (!gamePaused)
                 {
-                    //Update ninja player
-                    player.Update(gameTime);
-                }
+                    elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                UpdateCamera(gameTime);
-                UpdatePlayerHud(gameTime);
-                UpdateObstacles(gameTime);
-                UpdateEnemies(gameTime);
-                UpdateEnemiesWithObject(gameTime);
-                UpdateFlyingEnemies(gameTime);
-                UpdateGems(gameTime);
-                UpdateHorizontalEnemies(gameTime);
-                UpdateCollisionAnimations(gameTime);
-                UpdateCollisions();
-
-                if (player.PlayerState != Player.State.Hit)
-                {
                     if (FinishedWallTransition)
                     {
-                        elapsedGameplayTime += gameTime.ElapsedGameTime.TotalMilliseconds;
-                        UpdateBackground(gameTime);
+                        //Update ninja player
+                        player.Update(gameTime);
                     }
 
-                    UpdateWalls(gameTime);
 
-                    if (player.PlayerState != Player.State.NinjaStarPowerUp &&
-                        player.PlayerState != Player.State.Idle &&
-                        player.PlayerState != Player.State.HorizontalEnemyPowerUp)
+                    UpdatePlayerHud(gameTime);
+                    UpdateObstacles(gameTime);
+                    UpdateEnemies(gameTime);
+                    UpdateEnemiesWithObject(gameTime);
+                    UpdateFlyingEnemies(gameTime);
+                    UpdateGems(gameTime);
+                    UpdateHorizontalEnemies(gameTime);
+                    UpdateCollisionAnimations(gameTime);
+                    UpdateCollisions();
+
+                    if (player.PlayerState != Player.State.Hit)
                     {
+                        UpdateCamera(gameTime);
+                        UpdateWalls(gameTime);
+
                         if (FinishedWallTransition)
                         {
-                            UpdateSpawnItems(gameTime);
+                            elapsedGameplayTime += gameTime.ElapsedGameTime.TotalMilliseconds;
+                            UpdateBackground(gameTime);
+                        }
+
+                        if (player.PlayerState != Player.State.NinjaStarPowerUp &&
+                            player.PlayerState != Player.State.Idle &&
+                            player.PlayerState != Player.State.HorizontalEnemyPowerUp)
+                        {
+                            if (FinishedWallTransition)
+                            {
+                                UpdateSpawnItems(gameTime);
+                            }
+                        }
+
+                        UpdateSpawnTimeInterval();
+                    }
+                    else
+                    {
+                        if (!gameOver)
+                        {
+                            InitiateGameOverScreen(gameTime);
                         }
                     }
+                }
 
-                    UpdateSpawnTimeInterval();
-                }
-                else
-                {
-                    if (!gameOver)
-                    {
-                        InitiateGameOverScreen(gameTime);
-                    }
-                }
+                base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
             }
-
-            base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 
         #endregion
@@ -414,19 +433,19 @@ namespace Ninja_Dash
             {
                 spawnTimeInterval = 1200;
                 numberOfObstacles = 2;
-                obstacleTimeDifference = 200;
+                obstacleTimeDifference = 250;
             }
             else if (score > 1500 && score <= 2500)
             {
                 spawnTimeInterval = 1000;
                 numOfObjects = EnemyWithObject.NumberOfObjects.Two;
             }
-            else if (score > 2500 && score <= 3000)
+            else if (score > 2500 && score <= 3500)
             {
                 spawnTimeInterval = 800;
                 numberOfObstacles = 3;
             }
-            else if (score > 3000 && score <= 3500)
+            else if (score > 3500 && score <= 4500)
             {
                 spawnTimeInterval = 700;
             }
@@ -436,30 +455,22 @@ namespace Ninja_Dash
             }
             else if (score > 4000 && score <= 5000)
             {
-                spawnTimeInterval = 500;
+                spawnTimeInterval = 700;
             }
             else if (score > 5000 && score <= 6000)
             {
-                spawnTimeInterval = 400;
+                spawnTimeInterval = 600;
             }
             else if (score > 6000 && score <= 7000)
             {
-                spawnTimeInterval = 300;
+                spawnTimeInterval = 500;
             }
-            else if (score > 7000 && score <= 8000)
+            else if (score > 7000)
             {
-                obstacleTimeDifference = 200;
-            }
-            else if (score > 8000 && score <= 9000)
-            {
-                spawnTimeInterval = 100;
-            }
-            else if (score > 9000)
-            {
-                obstacleTimeDifference = 130;
+                spawnTimeInterval = 400;
             }
 
-            if (score > 3000)
+            if (score > 4000) 
             {
                 GenerateRandomNumberOfObstacles();
             }
@@ -564,7 +575,7 @@ namespace Ninja_Dash
             else if (randomNumber >= 16 && randomNumber <= 18)
             {
                 HorizontalEnemy horizontalEnemy = new HorizontalEnemy(ScreenManager.Game,
-                    new Animation(animationStore["HorizontalEnemy"]), player);
+                    new Animation(animationStore["HorizontalEnemy"]), player, horizontalEnemyPlatformTexture);
 
                 horizontalEnemy.Initialize();
 
@@ -717,7 +728,7 @@ namespace Ninja_Dash
         private void SpawnFlyingEnemy()
         {
             FlyingEnemy flyingEnemy = new FlyingEnemy(ScreenManager.Game, ScreenManager.SpriteBatch,
-                new Animation(animationStore["NinjaStar"]), player);
+                new Animation(animationStore["Kunai"]), player);
 
             flyingEnemies.Add(flyingEnemy);
             AudioManager.PlaySound("Shuriken_Throw");
@@ -776,6 +787,14 @@ namespace Ninja_Dash
             {
                 // Update items
                 enemiesWithObject[i].Update(gameTime);
+
+                for (int j = enemiesWithObject[i].flyingObjects.Count - 1; j >= 0; j--)
+                {
+                    if (!enemiesWithObject[i].flyingObjects[j].Active)
+                    {
+                        enemiesWithObject[i].flyingObjects.RemoveAt(j);
+                    }
+                }
 
                 //Remove items if inactive
                 if (!enemiesWithObject[i].Active)
@@ -875,12 +894,15 @@ namespace Ninja_Dash
 
         private void UpdateCollisions()
         {
-            UpdateObstacleCollisions();
-            UpdateEnemyCollisions();
-            UpdateEnemyWithObjectCollisions();
-            UpdateFlyingEnemyCollisions();
-            UpdateGemCollisions();
-            UpdateHorizontalEnemyCollisions();
+            if (player.PlayerState != Player.State.Hit)
+            {
+                UpdateObstacleCollisions();
+                UpdateEnemyCollisions();
+                UpdateEnemyWithObjectCollisions();
+                UpdateFlyingEnemyCollisions();
+                UpdateGemCollisions();
+                UpdateHorizontalEnemyCollisions();
+            }
         }
 
         private void UpdateObstacleCollisions()
@@ -921,44 +943,32 @@ namespace Ninja_Dash
                 //If the player has collided with the enemy throwing the object, initiate hit collision events
                 if (player.CollisionRectangle.Intersects(enemiesWithObject[i].CollisionRectangle))
                 {
+                    if(!enemiesWithObject[i].CollidedWithPlayer)
                     InitiateHitCollision();
-                    enemiesWithObject[i].Active = false;
+                    enemiesWithObject[i].CollidedWithPlayer = true;
                 }
 
-                //Store collision states of ninja stars
-                bool ninjaStar1Collided = player.CollisionRectangle.Intersects(enemiesWithObject[i].ninjaStar1.CollisionRectangle);
-                bool ninjaStar2Collided = player.CollisionRectangle.Intersects(enemiesWithObject[i].ninjaStar2.CollisionRectangle);
-
-                //Check whether any of the ninja stars have been hit
-                if (ninjaStar1Collided || ninjaStar2Collided)
+                for (int j = enemiesWithObject[i].flyingObjects.Count - 1; j >= 0; j--)
                 {
-                    //If the player was running initiate hit collision events
-                    if (player.PlayerState == Player.State.RunLeft || player.PlayerState == Player.State.RunRight)
+                    if (player.CollisionRectangle.Intersects(enemiesWithObject[i].flyingObjects[j].CollisionRectangle))
                     {
-                        InitiateHitCollision();
-                    }
-                    else if (player.PlayerState == Player.State.Jump)
-                    {
-                        //Check if player has collided with ninja star 1
-                        if (ninjaStar1Collided && enemiesWithObject[i].ninjaStar1.Active)
+                        enemiesWithObject[i].flyingObjects[j].Active = false;
+
+                        //If the player was running initiate hit collision events
+                        if (player.PlayerState == Player.State.RunLeft || player.PlayerState == Player.State.RunRight)
                         {
-                            enemiesWithObject[i].ninjaStar1.Active = false;
+                            InitiateHitCollision();
+                        }
+                        else if (player.PlayerState == Player.State.Jump)
+                        {
                             AudioManager.PlaySound("Shuriken_Metal_Hit");
                             player.IncrementItemCollected("NinjaStars");
-                        }
 
-                        //Check if player has collided with ninja star 2
-                        if (ninjaStar2Collided && enemiesWithObject[i].ninjaStar2.Active)
-                        {
-                            enemiesWithObject[i].ninjaStar2.Active = false;
-                            AudioManager.PlaySound("Shuriken_Metal_Hit");
-                            player.IncrementItemCollected("NinjaStars");
-                        }
-
-                        //If player has collected three stars initiate power up
-                        if (player.ItemsCollected["NinjaStars"] >= 3)
-                        {
-                            player.PlayerState = Player.State.NinjaStarPowerUp;
+                            //If player has collected three stars initiate power up
+                            if (player.ItemsCollected["NinjaStars"] >= 3)
+                            {
+                                player.PlayerState = Player.State.NinjaStarPowerUp;
+                            }
                         }
                     }
                 }
@@ -976,6 +986,11 @@ namespace Ninja_Dash
                         AudioManager.PlaySound("Shuriken_Metal_Hit");
                         flyingEnemies[i].Active = false;
                         player.IncrementItemCollected("FlyingObjects");
+                    }
+                    else if (player.PlayerState == Player.State.RunLeft || player.PlayerState == Player.State.RunRight)
+                    {
+                        InitiateHitCollision();
+                        flyingEnemies[i].Active = false;
                     }
                 }
             }
@@ -1007,14 +1022,20 @@ namespace Ninja_Dash
                 {
                     if (player.PlayerState == Player.State.RunLeft || player.PlayerState == Player.State.RunRight)
                     {
-                        InitiateHitCollision();
-                        horizontalEnemies[i].Active = false;
+                        if (!horizontalEnemies[i].CollidedWithPlayer)
+                        {
+                            InitiateHitCollision();
+                            horizontalEnemies[i].CollidedWithPlayer = true;
+                        }
                     }
                     else if (player.PlayerState == Player.State.Jump)
                     {
-                        horizontalEnemies[i].Active = false;
-                        player.IncrementItemCollected("HorizontalEnemies");
-                        AudioManager.PlaySound("HorizontalEnemyHit");
+                        if (!horizontalEnemies[i].CollidedWithPlayer)
+                        {
+                            horizontalEnemies[i].CollidedWithPlayer = true;
+                            player.IncrementItemCollected("HorizontalEnemies");
+                            AudioManager.PlaySound("HorizontalEnemyHit");
+                        }
                     }
 
                     if (player.ItemsCollected["HorizontalEnemies"] >= 3)
@@ -1138,30 +1159,56 @@ namespace Ninja_Dash
 
         public override void HandleInput(InputState input)
         {
+            bool buttonTouched = false;
+
             // User presses the back button
             if (input.IsPauseGame(null))
             {
-                //ScreenManager.AddScreen(new MainMenuScreen(), null);
+                if (!gamePaused)
+                {
+                    gamePaused = true;
+                }
+                else
+                {
+                    gamePaused = false;
+                }
             }
 
             if (player.FinishedTransition)
             {
                 if (input.TouchState.Count > 0 && input.TouchState[0].State == TouchLocationState.Pressed)
                 {
-                    // Check if the ninja is not currently jumping, falling, and using a power up
-                    if (player.PlayerState != Player.State.Jump && player.PlayerState != Player.State.Hit &&
-                        player.PlayerState != Player.State.NinjaStarPowerUp && player.PlayerState != Player.State.Idle &&
-                        player.PlayerState != Player.State.HorizontalEnemyPowerUp)
+                    if (gamePaused)
                     {
-                        player.StartMotionPosition = player.Position;
+                        //Resume game
+                        gamePaused = false;
+                        return;
+                    }
 
-                        // Save the previous state to know where the ninja should jump (left/right)
-                        player.PreviousState = player.PlayerState;
+                    if (pauseButton.ButtonRect.Contains((int)input.TouchState[0].Position.X, (int)input.TouchState[0].Position.Y))
+                    {
+                        //Pause game
+                        buttonTouched = true;
+                        pauseButton.OnSelectEntry();
+                    }
 
-                        // Make the current state of the ninja to jump
-                        player.PlayerState = Player.State.Jump;
+                    if (!buttonTouched && !gamePaused)
+                    {
+                        // Check if the ninja is not currently jumping, falling, and using a power up
+                        if (player.PlayerState != Player.State.Jump && player.PlayerState != Player.State.Hit &&
+                            player.PlayerState != Player.State.NinjaStarPowerUp && player.PlayerState != Player.State.Idle &&
+                            player.PlayerState != Player.State.HorizontalEnemyPowerUp)
+                        {
+                            player.StartMotionPosition = player.Position;
 
-                        AudioManager.PlaySound("PlayerJump");
+                            // Save the previous state to know where the ninja should jump (left/right)
+                            player.PreviousState = player.PlayerState;
+
+                            // Make the current state of the ninja to jump
+                            player.PlayerState = Player.State.Jump;
+
+                            AudioManager.PlaySound("PlayerJump");
+                        }
                     }
                 }
             }
@@ -1208,10 +1255,20 @@ namespace Ninja_Dash
                     DrawPlayerScore(spriteBatch);
                 }
 
+                if (gamePaused)
+                {
+                    spriteBatch.Draw(pauseTextTexture, Vector2.Zero, Color.White);
+                }
+
                 DrawPlayerHud(spriteBatch);
             }
 
             spriteBatch.End();
+
+            if (FinishedWallTransition)
+            {
+                base.Draw(gameTime);
+            }
         }
 
         #endregion

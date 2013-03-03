@@ -60,25 +60,31 @@ namespace Ninja_Dash
 
         private void AddAnimations()
         {
-            Animation playerJumpAnimation = new Animation("Textures/Player/Jump", 11, true, 170, 64, 64, 1.5f);
-            Animation playerRunAnimation = new Animation("Textures/Player/Run", 10, true, 60, 64, 64, 1.5f);
-            Animation enemyRunAnimation = new Animation("Textures/Enemy/Run", 10, true, 60, 64, 64, 1.5f);
+            Animation playerJumpAnimation = new Animation("Textures/Player/NinjaJump", 1, true, 170, 250, 250, 0.37f);
+            Animation playerRunAnimation = new Animation("Textures/Player/RunNinja", 6, true, 70, 250, 250, 0.37f);
+            Animation playerFallAnimation = new Animation("Textures/Player/Fall", 4, true, 80, 250, 250, 0.37f);
+            Animation playerIdleFallAnimation = new Animation("Textures/Player/IdleFall", 6, false, 100, 250, 250, 0.37f);
+            Animation enemyRunAnimation = new Animation("Textures/Enemy/EnemyNinja", 1, true, 60, 250, 250, 0.30f);
             Animation ninjaStarAnimation = new Animation("Textures/NinjaStar", 5, true, 20, 30, 30, 1.5f);
             Animation rocketShipAnimation = new Animation("Textures/Rocketship", 1, true, 30, 100, 150, 1.5f);
             Animation gemAnimation = new Animation("Textures/Gem", 1, true, 30, 32, 32, 1.35f);
             Animation horizontalEnemyRunAnimation = new Animation("Textures/Enemy/Run2", 10, true, 60, 64, 64, 1.5f);
             Animation shieldAnimation = new Animation("Textures/Shield", 1, true, 60, 80, 80, 1.3f);
+            Animation kunaiAnimation = new Animation("Textures/Kunai", 1, true, 60, 70, 70, 1.0f);
 
             //Hud
             Animation hudEnemyAnimation = new Animation("Textures/Enemy/Run3", 10, true, 60, 64, 64, 1.0f);
             Animation hudNinjaStarAnimation = new Animation("Textures/NinjaStar", 5, true, 20, 30, 30, 1.3f);
             Animation hudHorizontalEnemyAnimation = new Animation("Textures/Enemy/Run2", 10, true, 60, 64, 64, 1.0f);
+            Animation hudKunaiAnimation = new Animation("Textures/Kunai", 1, true, 60, 70, 70, 0.7f);
 
             //Collision Animations
             Animation obstacleCollisionAnimation = new Animation("Textures/ObstacleCollision", 12, false, 60, 134, 134, 1.0f);
 
             Animations.Add("PlayerJump", playerJumpAnimation);
             Animations.Add("PlayerRun", playerRunAnimation);
+            Animations.Add("PlayerFall", playerFallAnimation);
+            Animations.Add("PlayerIdleFall", playerIdleFallAnimation);
             Animations.Add("EnemyRun", enemyRunAnimation);
             Animations.Add("NinjaStar", ninjaStarAnimation);
             Animations.Add("Rocketship", rocketShipAnimation);
@@ -89,6 +95,8 @@ namespace Ninja_Dash
             Animations.Add("HudHorizontalEnemy", hudHorizontalEnemyAnimation);
             Animations.Add("HudNinjaStar", hudNinjaStarAnimation);
             Animations.Add("ObstacleCollision", obstacleCollisionAnimation);
+            Animations.Add("Kunai", kunaiAnimation);
+            Animations.Add("HudKunai", hudKunaiAnimation);
         }
 
         #endregion

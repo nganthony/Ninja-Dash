@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Phone.Shell;
 using GameStateManagement;
 
 namespace Ninja_Dash
@@ -51,13 +52,6 @@ namespace Ninja_Dash
             Components.Add(screenManager);
 
             AudioManager.Initialize(this);
-
-            GameplayScreen gameplayScreen = new GameplayScreen();
-
-            screenManager.AddScreen(gameplayScreen, null);
-            screenManager.AddScreen(new MainMenuScreen(gameplayScreen), null);
-
-            screenManager.TraceEnabled = true;
         }
 
         void graphics_PreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
@@ -73,6 +67,23 @@ namespace Ninja_Dash
         /// </summary>
         protected override void Initialize()
         {
+            if (PhoneApplicationService.Current.StartupMode == StartupMode.Activate)
+            {
+                GameplayScreen gameplayScreen = new GameplayScreen();
+
+                screenManager.AddScreen(gameplayScreen, null);
+                screenManager.AddScreen(new MainMenuScreen(gameplayScreen), null);
+            }
+            else
+            {
+                GameplayScreen gameplayScreen = new GameplayScreen();
+
+                screenManager.AddScreen(gameplayScreen, null);
+                screenManager.AddScreen(new MainMenuScreen(gameplayScreen), null);
+
+                screenManager.AddScreen(new SplashScreen(), null);
+            }
+
             // TODO: Add your initialization logic here
             base.Initialize();
         }

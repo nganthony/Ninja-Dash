@@ -140,9 +140,6 @@ namespace Ninja_Dash
         {
             Vector2 highscoreTexturePosition = new Vector2(240, 200);
 
-            //Create a fade effect when the screen is transitioning on
-            ScreenManager.FadeBackBufferToBlack(TransitionPosition);
-
             ScreenManager.SpriteBatch.Begin();
 
             ScreenManager.SpriteBatch.Draw(highscoreTexture, highscoreTexturePosition, null, Color.White, 0.0f,
@@ -179,6 +176,9 @@ namespace Ninja_Dash
             }
 
             ScreenManager.SpriteBatch.End();
+
+            //Create a fade effect when the screen is transitioning on
+            ScreenManager.FadeBackBufferToBlack(TransitionPosition); 
 
             base.Draw(gameTime);
         }

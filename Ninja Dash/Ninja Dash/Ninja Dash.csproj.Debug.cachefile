@@ -17,9 +17,6 @@ Content\Textures\Enemy\Run2.xnb
 Content\Textures\Enemy\Run3.xnb
 Content\Textures\Shield.xnb
 Content\Textures\ObstacleCollision.xnb
-Content\Textures\MainMenuBackground.xnb
-Content\Textures\TouchAnywhereToPlay.xnb
-Content\Textures\MainMenuBackground2.xnb
 Content\Textures\BackgroundCastleLayer1.xnb
 Content\Textures\GameoverBackground.xnb
 Content\Textures\GameOverText.xnb
@@ -33,7 +30,6 @@ Content\Textures\Buttons\ButtonReplay.xnb
 Content\Textures\Buttons\ButtonBack.xnb
 Content\Textures\Buttons\ButtonHighscores.xnb
 Content\Textures\Buttons\ButtonOptions.xnb
-Content\Textures\TapToPlay.xnb
 Content\Textures\TapToAmbush.xnb
 Content\Textures\Backgrounds\BackgroundCastleLayer1.xnb
 Content\Textures\Backgrounds\BackgroundMountainLayer1.xnb
@@ -48,8 +44,6 @@ Content\Sounds\Shuriken_Throw.xnb
 Content\Sounds\Sword_Slash.xnb
 Content\Sounds\Swoosh.xnb
 Content\Sounds\LiftOff.xnb
-Content\Sounds\Footstep1.xnb
-Content\Sounds\Footstep2.xnb
 Content\Sounds\ShieldOn.xnb
 Content\Sounds\PlayerFall.xnb
 Content\Sounds\PlayerJump.xnb
@@ -59,4 +53,18 @@ Content\Textures\HighscoreText.xnb
 Content\Textures\Buttons\ButtonSoundOn.xnb
 Content\Textures\Buttons\ButtonSoundOff.xnb
 Content\Textures\Buttons\ButtonHelp.xnb
+Content\Textures\Player\RunNinja.xnb
+Content\Textures\Player\Fall.xnb
+Content\Textures\Player\NinjaJump.xnb
+Content\Textures\Player\IdleFall.xnb
+Content\Textures\Player\Fall2.xnb
+Content\Textures\HorizontalEnemyPlatform.xnb
+Content\Textures\Enemy\EnemyNinja.xnb
+Content\Textures\TutorialScreen.xnb
+Content\Textures\Kunai.xnb
+Content\Textures\pause.xnb
+Content\Textures\PauseText.xnb
+Content\Textures\Buttons\ButtonRateApp.xnb
+Content\Textures\MenuTitle.xnb
+Content\Textures\SplashScreen.xnb
 Content\Sounds\GameplayMusic.wma

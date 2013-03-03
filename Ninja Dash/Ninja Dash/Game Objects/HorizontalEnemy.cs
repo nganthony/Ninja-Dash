@@ -7,6 +7,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using GameStateManagement;
 
 namespace Ninja_Dash
 {
@@ -16,6 +17,7 @@ namespace Ninja_Dash
 
         Game curGame;
 
+        Texture2D horizontalEnemyPlatform;
         Animation animation;
 
         public Vector2 Position;
@@ -37,8 +39,8 @@ namespace Ninja_Dash
         {
             get
             {
-                Rectangle rect = new Rectangle((int)Position.X - animation.FrameWidth,
-                    (int)Position.Y - animation.FrameHeight, animation.FrameWidth,
+                Rectangle rect = new Rectangle((int)Position.X - animation.FrameWidth / 2,
+                    (int)Position.Y - animation.FrameHeight / 2, animation.FrameWidth,
                     animation.FrameHeight);
 
                 return rect;
@@ -46,23 +48,26 @@ namespace Ninja_Dash
         }
 
         public bool Active;
+        public bool CollidedWithPlayer;
 
         Random random;
 
-        public HorizontalEnemy(Game game, Animation animation, Player player)
+        public HorizontalEnemy(Game game, Animation animation, Player player, Texture2D platform)
         {
             curGame = game;
             this.animation = animation;
             this.player = player;
             initialYPosition = player.Position.Y;
+            horizontalEnemyPlatform = platform;
 
             Active = true;
-
+            CollidedWithPlayer = false;
             random = new Random();
         }
 
         public void Initialize()
         {
+            
             maxLeftPosition = player.marginLeft + 30;
             maxRightPosition = player.marginRight - 30;
 
@@ -123,7 +128,13 @@ namespace Ninja_Dash
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            animation.Draw(spriteBatch, Position, flip);
+            spriteBatch.Draw(horizontalEnemyPlatform, new Vector2(0, Position.Y + animation.FrameHeight / 2), null, Color.White, 0.0f,
+                    Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
+
+            if (!CollidedWithPlayer)
+            {
+                animation.Draw(spriteBatch, Position, flip);
+            }
         }
     }
 }

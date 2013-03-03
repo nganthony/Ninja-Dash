@@ -35,6 +35,8 @@ namespace Ninja_Dash
         protected Vector2 leftPosition;
         protected Vector2 rightPosition;
 
+        const float ENEMY_POSITION_OFFSET = 20.0f;
+
         //Initial Y position player was in during spawn
         //so that the enemy could be spawned relative to that position
         float initialYPosition;
@@ -44,9 +46,9 @@ namespace Ninja_Dash
         {
             get
             {
-                Rectangle rect = new Rectangle((int)Position.X - enemyAnimation.FrameWidth / 2, 
-                    (int)Position.Y - enemyAnimation.FrameHeight / 2,
-                    enemyAnimation.FrameWidth, enemyAnimation.FrameHeight);
+                Rectangle rect = new Rectangle((int)Position.X - enemyAnimation.ScaledWidth / 2, 
+                    (int)Position.Y - enemyAnimation.ScaledHeight / 2,
+                    enemyAnimation.ScaledWidth, enemyAnimation.ScaledHeight);
 
                 return rect;
             }
@@ -70,8 +72,8 @@ namespace Ninja_Dash
         public virtual void Initialize()
         {
             //Set the positions which enemy can spawn
-            leftPosition = new Vector2(player.marginLeft, player.Position.Y - player.marginVertical - player.verticalOffset);
-            rightPosition = new Vector2(player.marginRight, player.Position.Y - player.marginVertical - player.verticalOffset);
+            leftPosition = new Vector2(player.marginLeft - ENEMY_POSITION_OFFSET, player.Position.Y - player.marginVertical - player.verticalOffset);
+            rightPosition = new Vector2(player.marginRight + ENEMY_POSITION_OFFSET, player.Position.Y - player.marginVertical - player.verticalOffset);
 
             //Store the current Y position of player
             initialYPosition = player.Position.Y;
