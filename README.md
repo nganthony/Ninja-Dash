@@ -1,7 +1,8 @@
 # Super Shinobi 
 
 ## Introduction
-Super Shinobi is a 2D side scrolling game built with C# and XNA for Windows Phone. It is still in development and most of the art assets are in the mock phase.
+Super Shinobi is a 2D side scrolling game built with C# and XNA for Windows Phone. 
+Super Shinobi is now released on the Windows Phone App Store. Check it out: http://bit.ly/YlXzU8
 
 ## Installation
 1. Download Visual Studio 2010 Express for Windows Phone on create.msdn.com.
