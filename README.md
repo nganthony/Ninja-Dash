@@ -1,8 +1,8 @@
-# Super Shinobi 
+# Shinobi Reborn
 
 ## Introduction
-Super Shinobi is a 2D side scrolling game built with C# and XNA for Windows Phone. 
-Super Shinobi is now released on the Windows Phone App Store. Check it out: http://bit.ly/YlXzU8
+Shinobi Reborn is a 2D side scrolling game built with C# and XNA for Windows Phone. 
+Shinobi Reborn is now released on the Windows Phone App Store. Check it out: http://bit.ly/ZYqX6q
 
 ## Installation
 1. Download Visual Studio 2010 Express for Windows Phone on create.msdn.com.
@@ -10,19 +10,3 @@ Super Shinobi is now released on the Windows Phone App Store. Check it out: http
 3. Open the project and run the .sln file with Visual Studio 2010 Express for Windows Phone
 4. Run the game with Windows Phone as the target.
 
-## Screenshots
-![Screenshot 1](https://raw.github.com/nganthony/Ninja-Dash/master/Screenshots/HomeScreen.png)
-
-![Screenshot 2](https://raw.github.com/nganthony/Ninja-Dash/master/Screenshots/PlayScreen1.png)
-
-![Screenshot 3](https://raw.github.com/nganthony/Ninja-Dash/master/Screenshots/PlayScreen2.png)
-
-![Screenshot 4](https://raw.github.com/nganthony/Ninja-Dash/master/Screenshots/PlayScreen3.png)
-
-![Screenshot 5](https://raw.github.com/nganthony/Ninja-Dash/master/Screenshots/PlayScreen4.png)
-
-![Screenshot 6](https://raw.github.com/nganthony/Ninja-Dash/master/Screenshots/PlayScreen5.png)
-
-![Screenshot 7](https://raw.github.com/nganthony/Ninja-Dash/master/Screenshots/PlayScreen6.png)
-## Credits
-Thanks to Joshua Sevilla for drawing some of the art assets!
